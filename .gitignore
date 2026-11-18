@@ -1,0 +1,18 @@
+# KiCad session files, backups, and local locks
+*.kicad_prl
+*.kicad_sch-bak
+*-backups/
+*.lck
+
+# Regenerable LTspice output
+*.raw
+*.log
+*.net
+*.op.raw
+
+# OS and notebook cache
+.DS_Store
+Thumbs.db
+__pycache__/
+.ipynb_checkpoints/
+*.tmp
