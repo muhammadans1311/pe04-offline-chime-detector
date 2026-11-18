@@ -4,7 +4,7 @@
 
 ## Sources used
 
-- [Archived KiCad schematic](../hardware/archive/earlier-kicad-sources/PraticalElectronics_AY2.kicad_pro(1).kicad_sch) (`.kicad_sch`, KiCad 10)
+- [Archived KiCad schematic](../hardware/archive/earlier-kicad-sources/PraticalElectronics_AY2.kicad_pro%281%29.kicad_sch) (`.kicad_sch`, KiCad 10)
 - [Archived KiCad PCB](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pcb) (`.kicad_pcb`, KiCad 10)
 - [Eight-block circuit guide](../reports/eight-block-circuit-guide.pdf) (secondary explanatory reference)
 
