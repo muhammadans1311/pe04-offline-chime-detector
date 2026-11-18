@@ -11,6 +11,8 @@ A university team project exploring an **offline, visual-alert system** for reco
 
 **Repository upload status (18 Nov 2026):** Technical documentation is committed. Image/PDF/KiCad binary evidence is staged locally but is **not yet uploaded to GitHub**. This is intentionally explicit so links and visuals do not falsely imply completed uploads. See [asset transfer instructions](ASSETS_TO_UPLOAD.md).
 
+![PE-04 intended sound-to-light architecture](images/architecture.svg)
+
 ## Engineering summary
 
 | Subsystem | Intended design |
