@@ -1,8 +1,8 @@
-# Project reports
+# Engineering reports — uploaded
 
-Two full PDF reports supplied during the project should be uploaded here:
+The following two PDF files are now **present and verified in this repository**:
 
-- `development-and-verification-report.pdf`: 36-page chronology of recorded-sound testing, Python/Colab Goertzel feasibility and detailed LTspice simulations.
-- `eight-block-circuit-guide.pdf`: Eight-page illustrated team KiCad architecture guide, from USB-C through LED outputs.
+- [Development and Verification Report](development-and-verification-report.pdf) — 36 pages, reporting earlier October recorded-sound characterization, offline Colab Goertzel work, and LTspice development.
+- [Eight-block Professor Study Guide](eight-block-circuit-guide.pdf) — eight illustrated pages explaining the later team KiCad design blocks, from USB-C to LED outputs.
 
-The reports provide background evidence; they are not substitutes for the native LTspice schematic or the latest matched KiCad PCB source. PDF binaries may require separate upload via GitHub's web interface.
+**Provenance caveat:** The LTspice report documents an earlier stand-alone circuit, not measured or simulated performance of the archived AD8656/TLV9062 team PCB. The eight-block guide documents circuit intent and must not be treated as a verified electrical rule check or fabrication report. The matching latest native KiCad file is still unavailable.
