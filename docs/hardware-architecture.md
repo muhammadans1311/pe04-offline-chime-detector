@@ -1,31 +1,48 @@
-# Hardware architecture — archived native KiCad design
+# Hardware design and KiCad files
 
-This technical summary is grounded in the actual `.kicad_sch` and `.kicad_pcb` archived in this repository, with the [eight-block guide](../reports/eight-block-circuit-guide.pdf) as explanatory support. **It does not assert that those native files correspond to the later November 18 screenshot.**
+## System approach
 
-The [source component audit](kicad-source-component-audit.md) compared 57 physical PCB references and Value fields against the earlier native schematic. **All 57 match**; electrical connectivity, footprint pin mapping, ERC/DRC and the latest board revision remain unverified.
+The PE-04 board is designed around an ESP32-S3-WROOM-1. USB-C provides power and a USB data interface; a switching converter supplies the 3.3 V rail. An electret microphone is AC-coupled into a preamplifier referenced around mid-supply. Two active low-pass filter stages condition the signal for the ESP32 ADC. GPIO outputs drive three separate indicator LEDs.
 
-| Block | Actual reference numbers and values | Intended role |
+**Signal path:** Electret mic → bias / AC coupling → AD8656 preamplifier → TLV9062 filtering → ADC input conditioning → ESP32-S3 → three LED channels.
+
+## Major components in the uploaded native KiCad revision
+
+| Design block | Reference | Component / values |
 | --- | --- | --- |
-| 01 USB-C | J2 629722000214, R3/R4 5K1, U3 USBLC6-2SC6 | Nominal 5 V USB power/data and ESD interface |
-| 02 Switching supply | U1 TLV62569DBV; L1 2.2uH; R1 450K, R2 100K; C1–C4 | USB 5 V to nominal 3.3 V |
-| 03 Electret input | MK1 AOM-5024P-HD-MB-R, R23 100R, C13 10uF, R14 2K2, C11 100nF | Microphone bias and coupling |
-| 04 Midrail/preamp | U4 AD8656; R12/R13 10K, R9 47K, R10 4K7, R11 22K, C8–C10 | Buffered nominal 1.65 V reference and 11× gain |
-| 05 Active low-pass | U5 TLV9062; R15/R16 2K49; R17/R18 2K67; C12 8.2nF, C14 10nF, C15 22nF, C16 3.3nF, C17 100nF | Two Sallen–Key stages, fourth order; design target around 7 kHz, not measured |
-| 06 ADC interface | R19 220R; C18 1nF | Input conditioning for ESP32 ADC |
-| 07 Controller | U2 ESP32-S3-WROOM-1; SW1 RESET, SW2 BOOT; TP1–TP3 | MCU, USB/serial debug, ADC and digital outputs |
-| 08 LEDs | D1 Green, D2 Blue, D3 Red; R20/R21/R22 330R | Three independent light indicators |
+| USB-C connector | J2 | 629722000214 |
+| USB CC resistors | R3, R4 | 5.1 kΩ each |
+| USB data protection | U3 | USBLC6-2SC6 |
+| Switching supply | U1, L1 | TLV62569DBV; 2.2 µH |
+| Buck feedback | R1, R2 | 450 kΩ, 100 kΩ |
+| Microphone | MK1 | AOM-5024P-HD-MB-R |
+| Mic bias / supply decoupling | R14, R23, C13, C11 | 2.2 kΩ, 100 Ω, 10 µF, 100 nF |
+| Analog reference | R12, R13 | 10 kΩ each; nominal 1.65 V midpoint |
+| Preamplifier | U4, R9, R10 | AD8656; 47 kΩ, 4.7 kΩ; nominal 11× gain |
+| Active filter | U5 | TLV9062, two Sallen–Key stages |
+| First filter stage | R15, R16, C12, C14 | 2.49 kΩ, 2.49 kΩ, 8.2 nF, 10 nF |
+| Second filter stage | R17, R18, C15, C16 | 2.67 kΩ, 2.67 kΩ, 22 nF, 3.3 nF |
+| ADC input | R19, C18 | 220 Ω, 1 nF |
+| Control / indicators | U2, D1–D3, R20–R22 | ESP32-S3-WROOM-1; green, blue, red; 330 Ω each |
 
-### Intended signal chain
+The intended fourth-order active filter is described as having an approximately 7 kHz cutoff target. Its response has **not** been measured or independently verified on the later integrated board.
 
-MK1 electret mic → R14 bias/C11 AC coupling → U4 AD8656 preamplifier (biased around 1.65 V) → two TLV9062 Sallen–Key stages → R19/C18 ADC input → U2 ESP32-S3 GPIO4/ADC1_CH3 → *planned* classification → GPIO5/6/7 indicator control.
+## Native source files
 
-### Intended power chain
+The archive contains **an earlier revision** of these KiCad files:
 
-J2 USB-C nominal 5 V → U1 buck conversion → 3.3 V logic/analog supply. D+ and D− are USB data lines, not supply lines.
+- [PCB](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pcb)
+- [Schematic](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_sch)
+- [Project settings](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pro)
 
-### Technical limits
+The schematic is stored under the common project basename for easier opening alongside the PCB and project file. Its original filename is retained in Git history. No component data or schematic wiring was changed as part of that rename.
 
-- The approximate 7 kHz design target is sourced from the eight-block guide; the assembled fourth-order response has **not** been verified by matching-device simulation or bench measurements.
-- The historical LTspice study used a **different amplifier and third-order filtering implementation**. MCP6021 and generic UniversalOpamp2 are not the U4/U5 components in this archived KiCad design.
-- AOM-5024L-HD-R was an earlier considered microphone, not the current `MK1` Value field. The archived schematic and PCB both specify **AOM-5024P-HD-MB-R**.
-- No full ERC/DRC, native layout/net connectivity, assembled-board or production testing is claimed.
+The schematic and PCB were compared by reference and component Value field: **57 physical references, all agreeing**. That check does not evaluate electrical connectivity, symbol-to-footprint pin mapping or manufacturing rules.
+
+![Current available PCB screenshot](../images/pcb/latest-layout-screenshot-2026-11-18.jpg)
+
+*Later layout screenshot, 18 November 2026. The matching latest editable PCB has not yet been supplied.*
+
+## Before fabrication
+
+The next design revision should be saved as a matching set of KiCad project files. The team should complete ERC and DRC, inspect the USB-C and switching-supply implementation, verify analog headroom and filter response with appropriate op-amp models, check ADC sampling/anti-aliasing, and confirm ESP32 antenna clearance. These checks have not been recorded as passed.
