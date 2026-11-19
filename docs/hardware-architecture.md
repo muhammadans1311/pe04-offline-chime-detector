@@ -1,48 +1,50 @@
-# Hardware design and KiCad files
+# Hardware — ESP32-S3 Chime Detector
 
-## System approach
+The PE-04 schematic integrates USB-C power/data, a 3.3 V buck converter, an electret microphone, an analog preamplifier, two active low-pass filter stages, ESP32-S3 ADC input and three LED outputs.
 
-The PE-04 board is designed around an ESP32-S3-WROOM-1. USB-C provides power and a USB data interface; a switching converter supplies the 3.3 V rail. An electret microphone is AC-coupled into a preamplifier referenced around mid-supply. Two active low-pass filter stages condition the signal for the ESP32 ADC. GPIO outputs drive three separate indicator LEDs.
+## Main signal path
 
-**Signal path:** Electret mic → bias / AC coupling → AD8656 preamplifier → TLV9062 filtering → ADC input conditioning → ESP32-S3 → three LED channels.
+Electret microphone → bias network → C11 AC coupling → AD8656 preamplifier at 1.65 V reference → TLV9062 fourth-order active low-pass → R19/C18 ADC input → ESP32-S3 GPIO4.
 
-## Major components in the uploaded native KiCad revision
+The microcontroller is intended to classify sound patterns and drive individual LEDs. Firmware and sound-to-LED assignments are still to be developed.
 
-| Design block | Reference | Component / values |
+## Components in the uploaded KiCad revision
+
+| Function | References | Saved values |
 | --- | --- | --- |
-| USB-C connector | J2 | 629722000214 |
-| USB CC resistors | R3, R4 | 5.1 kΩ each |
-| USB data protection | U3 | USBLC6-2SC6 |
-| Switching supply | U1, L1 | TLV62569DBV; 2.2 µH |
-| Buck feedback | R1, R2 | 450 kΩ, 100 kΩ |
+| USB connector and CC | J2, R3, R4 | 629722000214, 5.1 kΩ, 5.1 kΩ |
+| USB ESD device | U3 | USBLC6-2SC6 |
+| Buck supply | U1, L1, R1, R2 | TLV62569DBV, 2.2 µH, 450 kΩ, 100 kΩ |
 | Microphone | MK1 | AOM-5024P-HD-MB-R |
-| Mic bias / supply decoupling | R14, R23, C13, C11 | 2.2 kΩ, 100 Ω, 10 µF, 100 nF |
-| Analog reference | R12, R13 | 10 kΩ each; nominal 1.65 V midpoint |
-| Preamplifier | U4, R9, R10 | AD8656; 47 kΩ, 4.7 kΩ; nominal 11× gain |
-| Active filter | U5 | TLV9062, two Sallen–Key stages |
-| First filter stage | R15, R16, C12, C14 | 2.49 kΩ, 2.49 kΩ, 8.2 nF, 10 nF |
-| Second filter stage | R17, R18, C15, C16 | 2.67 kΩ, 2.67 kΩ, 22 nF, 3.3 nF |
-| ADC input | R19, C18 | 220 Ω, 1 nF |
-| Control / indicators | U2, D1–D3, R20–R22 | ESP32-S3-WROOM-1; green, blue, red; 330 Ω each |
+| Microphone bias | R14 | 2.2 kΩ |
+| Microphone-supply RC filtering | R23, C13 | 100 Ω, 10 µF |
+| Audio AC coupling | C11 | 100 nF; passes AC to the preamp |
+| Preamp input reference path | R11 | 22 kΩ to 1.65 V reference |
+| Mid-supply divider | R12, R13 | 10 kΩ each |
+| Preamplifier feedback | U4, R9, R10 | AD8656, 47 kΩ, 4.7 kΩ; nominal 11× |
+| Filter stage 1 | U5, R15, R16, C12, C14 | TLV9062, 2.49 kΩ each, 8.2 nF, 10 nF |
+| Filter stage 2 | U5, R17, R18, C15, C16 | TLV9062, 2.67 kΩ each, 22 nF, 3.3 nF |
+| ADC isolation | R19, C18 | 220 Ω, 1 nF |
+| Indicators | D1–D3, R20–R22 | Green, blue, red; 330 Ω each |
 
-The intended fourth-order active filter is described as having an approximately 7 kHz cutoff target. Its response has **not** been measured or independently verified on the later integrated board.
+C11 with R11 has a nominal single-RC high-pass corner near **72 Hz** (`1 / (2π · 22 kΩ · 100 nF)`). This is a simplified estimate, not a measured response of the complete amplifier.
 
-## Native source files
+The two Sallen–Key sections are designed to produce a fourth-order low-pass with an approximate 7 kHz target. The actual integrated circuit response should be checked by matching-part simulation and then on hardware.
 
-The archive contains **an earlier revision** of these KiCad files:
+## KiCad project files
 
-- [PCB](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pcb)
-- [Schematic](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_sch)
-- [Project settings](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pro)
+These source files are an **earlier revision**, not necessarily the PCB version shown in the November 18 screenshot:
 
-The schematic is stored under the common project basename for easier opening alongside the PCB and project file. Its original filename is retained in Git history. No component data or schematic wiring was changed as part of that rename.
+- [Schematic (.kicad_sch)](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_sch)
+- [PCB (.kicad_pcb)](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pcb)
+- [Project (.kicad_pro)](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pro)
 
-The schematic and PCB were compared by reference and component Value field: **57 physical references, all agreeing**. That check does not evaluate electrical connectivity, symbol-to-footprint pin mapping or manufacturing rules.
+![Latest supplied PCB view](../images/pcb/latest-layout-screenshot-2026-11-18.jpg)
 
-![Current available PCB screenshot](../images/pcb/latest-layout-screenshot-2026-11-18.jpg)
+## Checks for the next revision
 
-*Later layout screenshot, 18 November 2026. The matching latest editable PCB has not yet been supplied.*
+The three LED footprints currently have 330 Ω series resistors, but LED part numbers and brightness requirements have not been specified. Calculate current and choose resistors after the actual LEDs and forward-voltage range are selected.
 
-## Before fabrication
+The offline sound experiments used 16 kHz audio. That is **not an established ESP32 ADC sampling rate**. Before implementing the detector, choose a hardware sample rate and verify analog anti-aliasing; a 7 kHz cutoff would provide limited rejection near an 8 kHz Nyquist frequency if sampling at 16 kHz.
 
-The next design revision should be saved as a matching set of KiCad project files. The team should complete ERC and DRC, inspect the USB-C and switching-supply implementation, verify analog headroom and filter response with appropriate op-amp models, check ADC sampling/anti-aliasing, and confirm ESP32 antenna clearance. These checks have not been recorded as passed.
+For the later PCB revision, run ERC and DRC, verify connections, inspect the ESP32 antenna keep-out and remaining possible open track ends, and record the actual findings before fabrication.
