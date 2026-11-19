@@ -1,4 +1,4 @@
-# LTspice — Microphone Front-End Experiments
+# LTspice microphone front-end experiments
 
 ## Purpose
 

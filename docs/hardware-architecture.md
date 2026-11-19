@@ -21,15 +21,19 @@ The microcontroller is intended to classify sound patterns and drive individual 
 | Audio AC coupling | C11 | 100 nF; passes AC to the preamp |
 | Preamp input reference path | R11 | 22 kΩ to 1.65 V reference |
 | Mid-supply divider | R12, R13 | 10 kΩ each |
-| Preamplifier feedback | U4, R9, R10 | AD8656, 47 kΩ, 4.7 kΩ; nominal 11× |
+| Reference smoothing | C9, C10 | 10 µF, 100 nF |
+| Reference buffer | U4B | AD8656 section B, buffering the 1.65 V reference |
+| Preamplifier feedback | U4A, R9, R10 | AD8656 section A, 47 kΩ, 4.7 kΩ; nominal 11× |
 | Filter stage 1 | U5, R15, R16, C12, C14 | TLV9062, 2.49 kΩ each, 8.2 nF, 10 nF |
 | Filter stage 2 | U5, R17, R18, C15, C16 | TLV9062, 2.67 kΩ each, 22 nF, 3.3 nF |
 | ADC isolation | R19, C18 | 220 Ω, 1 nF |
 | Indicators | D1–D3, R20–R22 | Green, blue, red; 330 Ω each |
 
-C11 with R11 has a nominal single-RC high-pass corner near **72 Hz** (`1 / (2π · 22 kΩ · 100 nF)`). This is a simplified estimate, not a measured response of the complete amplifier.
+C11 with R11 has a nominal single-RC high-pass corner near 72 Hz (`1 / (2π · 22 kΩ · 100 nF)`). This is a simplified estimate, not a measured response of the complete amplifier.
 
 The two Sallen–Key sections are designed to produce a fourth-order low-pass with an approximate 7 kHz target. The actual integrated circuit response should be checked by matching-part simulation and then on hardware.
+
+U4B buffers the mid-supply reference used by the preamplifier. C9 and C10 smooth the reference node.
 
 ## KiCad project files
 
@@ -38,12 +42,13 @@ These source files are an **earlier revision**, not necessarily the PCB version 
 - [Schematic (.kicad_sch)](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_sch)
 - [PCB (.kicad_pcb)](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pcb)
 - [Project (.kicad_pro)](../hardware/archive/earlier-kicad-sources/PE04_Chime_Detector_Schematics.kicad_pro)
+- [Design-value BOM (.csv)](../hardware/archive/earlier-kicad-sources/pe04-design-bom.csv)
 
 ![Latest supplied PCB view](../images/pcb/latest-layout-screenshot-2026-11-18.jpg)
 
 ## Checks for the next revision
 
-The three LED footprints currently have 330 Ω series resistors, but LED part numbers and brightness requirements have not been specified. Calculate current and choose resistors after the actual LEDs and forward-voltage range are selected.
+The design-value BOM lists footprints and values from the earlier KiCad revision. The three LEDs currently have 330 Ω series resistors, but specific LED manufacturer part numbers and brightness requirements have not been selected. Calculate current and choose resistors after the actual LEDs and forward-voltage range are selected.
 
 The offline sound experiments used 16 kHz audio. That is **not an established ESP32 ADC sampling rate**. Before implementing the detector, choose a hardware sample rate and verify analog anti-aliasing; a 7 kHz cutoff would provide limited rejection near an 8 kHz Nyquist frequency if sampling at 16 kHz.
 
