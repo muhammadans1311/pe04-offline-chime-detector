@@ -1,42 +1,49 @@
-# Microwave chime analysis
+# Sound analysis | Microwave chime detection
 
-## Goal of the experiment
+*Audio-analysis work documented by Muhammad Ans*
 
-I wanted to distinguish a repeated microwave completion chime from short unrelated sounds such as hand claps. The prototype evaluated one pattern: a tone close to 2,050 Hz, repeated in a three-beep sequence.
+## Starting with real recordings
 
-Doorbell and smoke-alarm test recordings were also analyzed, but the microwave detector rules are not detectors for those other sounds.
+I examined microwave, doorbell and smoke-detector test sounds to compare their frequencies, duration and repetition patterns. The practical problem was that a tone near the microwave's dominant frequency could also appear briefly during unrelated noise.
 
-## Sound recordings
+![Doorbell and smoke-detector test signals](../images/audio/doorbell-and-smoke-detector-spectrogram.png)
 
-![Doorbell and smoke-detector waveform and spectrogram](../images/audio/doorbell-and-smoke-detector-spectrogram.png)
+The doorbell shows a sequence of different tones. The smoke-detector test signal is around 2.8 kHz with onset spacing of roughly 1.35 seconds. The microwave's repeated tone is close to 2,050 Hz. Those patterns call for different detection criteria.
 
-The doorbell recording contains changing tones, while the smoke-detector test recording shows repeated bursts around 2.8 kHz, with onset spacing around 1.35 s. The microwave rules centered at 2.05 kHz with shorter onset spacing would not recognize those signals as intended.
+## Problem: claps triggered the first detector
 
-## Prototype method
+In the early approach, a threshold near 2,050 Hz was enough to report an event. A clap-only recording caused false detections at approximately 5.504 s and 9.088 s. A short burst of energy at the right frequency was being mistaken for an actual microwave completion chime.
 
-The offline Python development used:
+## My offline detection experiment
 
-- 16,000 Hz mono audio.
-- 1,024-sample Hann-windowed frames (64 ms), spaced every 160 samples (10 ms).
-- A Goertzel target of 2,050 Hz, plus a tonal-purity check.
-- Beep-duration and three-beep timing rules, intended to reject isolated percussive sounds.
-- An offline Butterworth bandpass as part of the recorded-audio analysis, not a real-time ESP32 implementation.
+I tested a more selective Goertzel-based approach that looked for a narrowband tone and the timing of a complete three-beep sequence.
 
-Exploratory parameters included a −55 dBFS tone threshold, tonal purity ≥0.60, beep length 0.22–0.85 s and onset spacing 0.50–0.95 s.
+| Setting | Development value |
+| --- | --- |
+| Recording format | 16 kHz mono |
+| Frame/window | 1,024 samples; Hann window |
+| Hop | 160 samples (10 ms) |
+| Frequency target | 2,050 Hz |
+| Tone threshold | −55 dBFS |
+| Minimum tonal purity | 0.60 |
+| Allowed beep duration | 0.22–0.85 s |
+| Onset interval | 0.50–0.95 s |
+
+The Python recording-analysis experiment also used an offline Butterworth bandpass. That filtering arrangement cannot simply be copied into a causal streaming implementation on an ESP32.
 
 ## Development tests
 
-The four development recordings gave the following alert counts:
-
-| Recording | Expected events | Reported detections |
+| Test | Expected alerts | Reported alerts |
 | --- | ---: | ---: |
-| `microwave_1.wav` | 1 | 1 |
-| `microwave_2.wav` | 1 | 1 |
-| `microwave_clap.wav` | 1 | 1 |
-| `claps_only.wav` | 0 | 0 |
+| Microwave recording 1 | 1 | 1 |
+| Microwave recording 2 | 1 | 1 |
+| Microwave and claps | 1 | 1 |
+| Claps only | 0 | 0 |
 
-I still need to add the original notebook and WAV files.
+This is a development set of four recordings, rather than an accuracy benchmark. The original notebook and WAV files still need to be added so that the tests can be run by someone else.
 
-## What comes next
+## What I would build next
 
-The doorbell and smoke-detector patterns need their own spectral and timing rules and new tests. For a hardware implementation, the offline filtering must be adapted to causal processing, the ESP32-S3 ADC rate and input range must be chosen and checked, and LED mappings must be defined. The current results are from offline sound analysis, not a functioning ESP32 firmware detector.
+The doorbell requires recognition of its changing tone sequence, while the smoke-detector test signal requires different frequency and repetition settings. Neither is implemented in the current microwave-specific rules.
+
+For embedded testing, the next tasks are selecting the ESP32 ADC sample rate, building causal audio processing, assigning LED indications and testing at different volumes, distances and background-noise levels.
