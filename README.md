@@ -88,4 +88,4 @@ The saved early amplifier-plus-RC-filter simulation reads **+20.08 dB at 2.054 k
 | Board soldering and first power-up | Pending |
 | ESP32 firmware and on-board sound recognition | Pending |
 
-After assembly we'll add board photographs, power measurements, analog test waveforms and the actual firmware results to the [build log](docs/assembly-and-testing.md). The original LTspice `.asc` projects and Python notebook/WAV test files are not yet included.
+After assembly we'll add board photographs, power measurements, analog test waveforms and the actual firmware results to the [build log](docs/assembly-and-testing.md). 
