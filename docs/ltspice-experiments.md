@@ -1,37 +1,47 @@
-# LTspice experiments | Microphone analog front-end
+# LTspice Microphone Front-End Experiments
 
-*Simulation work documented by Muhammad Ans*
+## Aim
 
-## What I wanted to test
+Before the integrated KiCad design, I used LTspice to test the basics of a microphone input: bias, small-signal amplification, analog filtering and the response of the 1.65 V reference at startup.
 
-An electret microphone produces a small AC signal. I investigated how to power its bias network, AC-couple the signal, amplify it around a mid-supply reference and filter unwanted high-frequency content before ADC sampling.
+## Early amplifier and RC-filter test
 
-I used LTspice for AC sweeps, transient tests, startup behavior and model troubleshooting. This was a development circuit explored before the full ESP32-S3 board.
+![Circuit used for early AC sweep](../images/ltspice/initial-frequency-sweep-schematic.png)
 
-## Early amplifier and RC-filter circuit
+This screenshot shows a simplified microphone source, nominal 3.3 V power, a 1.65 V reference, a non-inverting gain stage and a 3.3 kΩ / 10 nF output RC filter. The nominal RC corner is:
 
-![Early LTspice schematic](../images/ltspice/initial-frequency-sweep-schematic.png)
+```text
+f = 1 / (2πRC)
+  = 1 / (2π × 3.3 kΩ × 10 nF)
+  ≈ 4.8 kHz
+```
 
-This circuit uses a nominal 3.3 V supply, a 1.65 V bias reference, a non-inverting amplifier and an output RC filter with R = 3.3 kΩ and C = 10 nF. The RC-only corner is about `1/(2πRC) = 4.8 kHz`.
+![AC response](../images/ltspice/initial-ac-frequency-response.png)
 
-![AC frequency response](../images/ltspice/initial-ac-frequency-response.png)
+The plotted transfer ratio is `V(adc_out)/V(mic_raw)`. It includes amplifier gain and the output RC filter. The [saved cursor](../images/ltspice/initial-ac-gain-cursor.png) reads **+20.0777 dB at 2.0536624 kHz**. This is the number visible in the supplied LTspice plot.
 
-The graph is for `V(adc_out)/V(mic_raw)`. It includes amplifier gain and the RC network, so it is not a stand-alone filter attenuation plot. At 2.0536624 kHz the [saved cursor screenshot](../images/ltspice/initial-ac-gain-cursor.png) reads +20.0777 dB.
+## Transient response and supply noise
 
-The historical microphone-front-end work also explored a Sallen-Key plus RC topology, but its original executable `.asc` source and matching plot have not been recovered. I have not treated its reported values as independently reproducible from the present repository.
+![Transient signals](../images/ltspice/real-mic-bias-transient.png)
 
-## Transient behavior and bias
+I replaced the original ideal microphone-voltage test signal with a simple current-source model to explore the microphone bias path. I also checked whether the circuit could settle around its 1.65 V reference after power-up.
 
-![Transient simulation](../images/ltspice/real-mic-bias-transient.png)
+A separate test applied a small 5 kHz ripple to the ideal 3.3 V rail. I explored an RC branch at the microphone supply to reduce the ripple seen by the input stage. These were early simulation exercises, not measurements on the PCB.
 
-I explored a simplified microphone-current model, the input signal swing around 1.65 V and settling after startup. I also injected supply ripple into an idealized 3.3 V source and evaluated the effect of an RC branch (220 Ω and 10 µF) on microphone bias noise.
+## Op-amp model problem
 
-## Op-amp model troubleshooting
+I tried importing a Microchip MCP6021-family PSpice model for the analog stages. A single-model test worked, but multi-stage cases ran into numerical convergence problems. I moved to generic LTspice op-amp models for the follow-up circuit exploration rather than assuming the imported vendor model was working correctly.
 
-I imported an MCP6021-family PSpice model to explore real-device behavior. Simulations involving multiple instances encountered convergence problems. Generic LTspice amplifier models were used for further conceptual testing rather than presenting the failed manufacturer model as a valid simulation.
+I also experimented with an additional Sallen-Key filter stage. The original `.asc` file and matching plot for that run have not been added to GitHub, so I am not quoting its filter-only attenuation numbers here.
 
-## How I used the results
+## Relation to the V2 PCB
 
-These experiments helped me understand microphone biasing, gain, AC coupling, supply decoupling and the limits of idealized op-amp simulations. The team KiCad design later uses an AD8656 preamp and TLV9062 fourth-order active filter. They require their own matching simulation and, ultimately, hardware measurements.
+The V2 board uses an **AD8656ARZ** for preamplification and reference buffering, and a **TLV9062** for two cascaded filter sections. Those are not the devices in the early screenshot above. The V2 circuit will need its own simulation or measured sweep.
 
-The original LTspice schematic files are still needed to let someone rerun these experiments.
+### Files to add when recovered
+
+- Original LTspice `.asc` schematic(s)
+- Any model files that can legally be redistributed; otherwise a manufacturer download link
+- Plot configuration and a saved run matching each screenshot
+
+I want anyone opening the project to be able to distinguish what I simulated early on from what is actually present in the V2 schematic.

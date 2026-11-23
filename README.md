@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/35287730/README.md)
 # ESP32-S3 Offline Chime Detector
 
 **Practical Electronics | Mechatronic Systems Engineering | Rhine-Waal University of Applied Sciences**
@@ -116,4 +115,4 @@ The original `.asc` simulation files, the Goertzel notebook and WAV recordings a
 
 Install KiCad 10 and open [`hardware/current/PE04_Chime_Detector.kicad_pro`](hardware/current/PE04_Chime_Detector.kicad_pro). Keep the `libraries/` folder and the local `fp-lib-table` and `sym-lib-table` in the same project directory.
 
-
+*PE-04 is a university team project. KiCad schematic and PCB development was carried out with Ahmed Yehia Mohamed.*

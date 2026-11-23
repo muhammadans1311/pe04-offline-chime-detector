@@ -1,49 +1,61 @@
-# Sound analysis | Microwave chime detection
+# Microwave Chime Detection and Sound Analysis
 
-*Audio-analysis work documented by Muhammad Ans*
+## The problem
 
-## Starting with real recordings
+I started by recording different household alerts. I wanted to see whether frequency alone could tell a microwave completion beep from other noises. It couldn't. In a clap-only test, the first simple frequency trigger produced false events around 5.504 s and 9.088 s.
 
-I examined microwave, doorbell and smoke-detector test sounds to compare their frequencies, duration and repetition patterns. The practical problem was that a tone near the microwave's dominant frequency could also appear briefly during unrelated noise.
+![Doorbell and smoke-alarm test recordings](../images/audio/doorbell-and-smoke-detector-spectrogram.png)
 
-![Doorbell and smoke-detector test signals](../images/audio/doorbell-and-smoke-detector-spectrogram.png)
+The recordings also showed why one detection rule would not work for every sound:
 
-The doorbell shows a sequence of different tones. The smoke-detector test signal is around 2.8 kHz with onset spacing of roughly 1.35 seconds. The microwave's repeated tone is close to 2,050 Hz. Those patterns call for different detection criteria.
-
-## Problem: claps triggered the first detector
-
-In the early approach, a threshold near 2,050 Hz was enough to report an event. A clap-only recording caused false detections at approximately 5.504 s and 9.088 s. A short burst of energy at the right frequency was being mistaken for an actual microwave completion chime.
-
-## My offline detection experiment
-
-I tested a more selective Goertzel-based approach that looked for a narrowband tone and the timing of a complete three-beep sequence.
-
-| Setting | Development value |
+| Sound | What I observed |
 | --- | --- |
-| Recording format | 16 kHz mono |
-| Frame/window | 1,024 samples; Hann window |
+| Microwave | A repeated tone near 2,050 Hz |
+| Doorbell | A changing sequence of tones, roughly 608 / 455 / 385 / 455 / 608 Hz |
+| Smoke-alarm test signal | Repeated bursts near 2.8 kHz, with longer onset spacing |
+
+The working offline detector test focuses on the microwave. I have not built separate working detectors for the other two sound patterns yet.
+
+## Goertzel experiment
+
+I used a Goertzel-based narrowband measurement and added checks for tone purity and the timing of three beeps. The development settings were:
+
+| Setting | Value |
+| --- | --- |
+| Audio sampling rate | 16,000 Hz, mono |
+| Frame/window | 1,024 samples, Hann window |
 | Hop | 160 samples (10 ms) |
-| Frequency target | 2,050 Hz |
+| Target frequency | 2,050 Hz |
 | Tone threshold | −55 dBFS |
 | Minimum tonal purity | 0.60 |
-| Allowed beep duration | 0.22–0.85 s |
-| Onset interval | 0.50–0.95 s |
+| Beep length | 0.22–0.85 s |
+| Three-beep onset gaps | 0.50–0.95 s |
 
-The Python recording-analysis experiment also used an offline Butterworth bandpass. That filtering arrangement cannot simply be copied into a causal streaming implementation on an ESP32.
+The recorded-audio preprocessing included an offline Butterworth bandpass. Real-time filtering on the ESP32 will be a separate implementation.
 
-## Development tests
+## Development recordings
 
-| Test | Expected alerts | Reported alerts |
+| Recording | Expected alerts | Reported alerts |
 | --- | ---: | ---: |
-| Microwave recording 1 | 1 | 1 |
-| Microwave recording 2 | 1 | 1 |
-| Microwave and claps | 1 | 1 |
-| Claps only | 0 | 0 |
+| `microwave_1.wav` | 1 | 1 |
+| `microwave_2.wav` | 1 | 1 |
+| `microwave_clap.wav` | 1 | 1 |
+| `claps_only.wav` | 0 | 0 |
 
-This is a development set of four recordings, rather than an accuracy benchmark. The original notebook and WAV files still need to be added so that the tests can be run by someone else.
+The four-file test was useful for catching a false-trigger problem, but it is not a measured accuracy rate. The original `.ipynb` notebook and `.wav` recordings are not yet in the repository, so another person cannot rerun these results from GitHub alone.
 
-## What I would build next
+## Next experiments
 
-The doorbell requires recognition of its changing tone sequence, while the smoke-detector test signal requires different frequency and repetition settings. Neither is implemented in the current microwave-specific rules.
+When we move to the ESP32, I need to select an actual ADC rate, use causal frame processing, decide which LED represents each sound and test recordings at different distances and background-noise levels. The doorbell and smoke-test signals will need separate frequency and timing logic.
 
-For embedded testing, the next tasks are selecting the ESP32 ADC sample rate, building causal audio processing, assigning LED indications and testing at different volumes, distances and background-noise levels.
+### Original files to upload later
+
+```text
+software/goertzel/microwave_detector.ipynb
+software/goertzel/recordings/microwave_1.wav
+software/goertzel/recordings/microwave_2.wav
+software/goertzel/recordings/microwave_clap.wav
+software/goertzel/recordings/claps_only.wav
+```
+
+These are suggested GitHub filenames. Use the real original filenames if yours differ; do not rename or reconstruct tests just to make the repository look complete.

@@ -1,41 +1,62 @@
-# PE-04 | Assembly and bring-up plan
+# PCB Assembly and Bring-Up Log
 
-**Stage:** KiCad V2 source files collected; assembly and electrical tests still to be recorded.
+**Board:** PE-04 Chime Detector, KiCad V2 (22 November 2026)  
+**State:** Assembly and measurements to be recorded after soldering.
 
-## 1. Before soldering
+## Build history
 
-- [ ] Open the V2 KiCad schematic and PCB with project-local libraries.
-- [ ] Run ERC; record warnings and resolved issues.
-- [ ] Run DRC with `PE04_Chime_Detector.kicad_dru`; resolve routing, clearances, antenna keep-out and mechanical concerns.
-- [ ] Confirm that the assembled board matches the V2 BOM and board revision.
-- [ ] Check component polarity and orientation: microphone, LEDs, buck IC, op amps, ESP32 module and USB-C connector.
-- [ ] Inspect the three selected Kingbright LED types and the existing 330 Ω series resistors for suitable current and brightness.
+| Date | Work | Evidence |
+| --- | --- | --- |
+| 22 Nov 2026 | V2 schematic and PCB files saved | Native KiCad source under `hardware/current/` |
+| — | ERC and DRC | Add report/results after checking in KiCad |
+| — | Component assembly and soldering | Add actual date and PCB photographs |
+| — | First power-up | Add supply voltage/current measurements |
+| — | Analog signal-chain check | Add oscilloscope traces |
+| — | ESP32 firmware and sound tests | Add code and test recordings/results |
 
-## 2. First power-up
+## Before powering the board
 
-- [ ] Inspect for solder bridges and check power-to-ground resistance before connecting USB.
-- [ ] Apply a current-limited 5 V source; monitor supply current.
-- [ ] Measure 3.3 V buck output and the nominal 1.65 V analog reference.
-- [ ] Confirm ESP32 boot/reset and available test points.
+- Check solder joints and polarity of the electret microphone, LEDs, power IC and op-amps.
+- Check for unintended continuity between 5 V, 3.3 V and GND.
+- Verify USB-C connections, BOOT/RESET and the ESP32 antenna area.
+- Review the supplied design rules, then record actual KiCad ERC/DRC results.
 
-## 3. Analog front-end measurements
+## DC measurements
 
-- [ ] Verify microphone bias and C11 AC coupling.
-- [ ] Inject a known safe signal; measure AD8656ARZ gain and any clipping.
-- [ ] Sweep frequency and measure TLV9062 filter response with a defined measurement setup.
-- [ ] Check ADC input DC level, noise and signal range before sampling.
+Enter the actual values after assembly; nothing in this table is a measured result yet.
 
-## 4. Firmware and recognition
+| Test | Expected / target | Measured | Date |
+| --- | --- | --- | --- |
+| USB-C input | Nominal 5 V | — | — |
+| Regulator output | Nominal 3.3 V | — | — |
+| Buffered reference, U4B | Nominal 1.65 V | — | — |
+| Microphone bias | Check against schematic | — | — |
+| ESP32 boot/reset | Boot and reset available | — | — |
+| Supply current | Measure with current limit | — | — |
 
-- [ ] Select a documented ADC sample rate and review filter anti-aliasing.
-- [ ] Implement real-time audio frames, tone detection and a three-beep timing state machine.
-- [ ] Define which LED corresponds to each sound class.
-- [ ] Test the microwave pattern against clap-only and mixed recordings.
-- [ ] Develop and separately verify doorbell and smoke-alarm *test-sound* patterns.
-- [ ] Record false positives, missed triggers, sound levels, distances and backgrounds.
+## Analog and output tests
 
-## Evidence to add after assembly
+| Test | What to record | Result |
+| --- | --- | --- |
+| Preamp gain | Known input, measured Vpp at U4A output, test frequency | — |
+| Filter response | Sweep and measured transfer curve | — |
+| ADC input | DC offset, signal range, unwanted noise | — |
+| LED 1 / 2 / 3 | Voltage/current and visible brightness | — |
+| USB / firmware | Whether the ESP32 is detected and program runs | — |
+| Sound recognition | True/false triggers with room, distance and level | — |
 
-Photographs of the finished board, real ERC/DRC reports, test date and equipment, measured voltage/analog/ADC plots, firmware source and recorded detection results.
+## If something fails
 
-This is a student demonstrator, not a certified life-safety notification device.
+Record the symptom first. Then check power, reference voltage, continuity, input/output signals and solder joints in that order. Do not write a root cause until the fault is actually isolated.
+
+## Photos and captures to add after soldering
+
+```text
+images/bench/assembled-pcb-top.jpg
+images/bench/assembled-pcb-bottom.jpg
+images/bench/power-measurement.jpg
+images/bench/preamp-waveform.png
+images/bench/filter-sweep.png
+```
+
+Only add photos and measurements taken from the real board. This is a student sound-alert demonstrator, not a certified smoke-alarm product.
