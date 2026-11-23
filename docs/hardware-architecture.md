@@ -1,88 +1,96 @@
-# PE-04 Hardware Design
+# PE-04 | Circuit Design (V2)
 
-## PCB overview
+The current schematic is revision **V2**, dated **22 November 2026**. It is divided into eight functional blocks. These are screenshots from our KiCad design, not redrawn diagrams.
 
-This is the V2 hardware design dated 22 November 2026. I worked on the signal-chain integration and reviewed how the microphone circuit, supply, ADC and outputs fit together in the KiCad project.
+[Open the complete one-page A3 schematic (PDF)](../exports/PE04_V2_schematic.pdf) · [Editable KiCad schematic](../hardware/current/PE04_Chime_Detector.kicad_sch) · [V2 PCB](../hardware/current/PE04_Chime_Detector.kicad_pcb)
 
-| PCB detail | V2 source |
-| --- | --- |
-| Copper stack | 2 layers: F.Cu and B.Cu |
-| Board outline | 74.3 × 57.5 mm |
-| Board thickness | 1.6 mm in the KiCad file |
-| Electronic placements | 57 |
-| Mechanical holes | H1–H4, 2.2 mm M2 |
-| Routing in the saved PCB | 383 segment entries and 57 via entries |
-| Ground plane | GND copper zone on B.Cu |
+![Full schematic overview](../images/kicad/v2-schematic-overview.png)
 
-The current project contains [the schematic](../hardware/current/PE04_Chime_Detector.kicad_sch), [PCB](../hardware/current/PE04_Chime_Detector.kicad_pcb), [project configuration](../hardware/current/PE04_Chime_Detector.kicad_pro), [design rules](../hardware/current/PE04_Chime_Detector.kicad_dru) and [custom KiCad libraries](../hardware/current/libraries/).
+## 01 · USB-C power and data
 
-## 1. USB-C and 3.3 V supply
+![USB-C power and data interface](../images/kicad/01-usb-c-power-data.png)
 
-The board accepts nominal 5 V through a 629722000214 USB-C connector (J2). R3 and R4 are separate 5.1 kΩ CC pull-downs. U3 (USBLC6-2SC6) protects the USB data interface. U1 (TLV62569DBV) is the buck regulator, paired with a 2.2 µH inductor (L1). R1 = 450 kΩ and R2 = 100 kΩ form its feedback network for the intended 3.3 V output.
+The USB-C connector **J2** brings in `USB_5V` and the USB 2.0 D+/D− lines. **R3 and R4 (5.1 kΩ)** are the separate CC pull-down resistors. **U3 (USBLC6-2SC6)** protects the USB data pair against ESD.
 
-The supply has to power the ESP32-S3 and the microphone/analog stages. I would start first power-up by checking 3.3 V without connecting any external signal source.
+The D+/D− connections continue to the ESP32-S3, with 22 Ω series resistors in the microcontroller block. The connector's SBU pins are unused in this design.
 
-## 2. Electret microphone and bias
+## 02 · 3.3 V switching supply
 
-MK1 is the AOM-5024P-HD-MB-R electret microphone.
+![3.3 V buck power supply](../images/kicad/02-buck-power-supply.png)
 
-- R14 = 2.2 kΩ biases the microphone.
-- R23 = 100 Ω and C13 = 10 µF filter its supply.
-- C11 = 100 nF AC-couples the microphone signal.
-- R11 = 22 kΩ provides the input's reference path. The simple C11/R11 high-pass estimate is about 72 Hz.
+**U1 (TLV62569DBV)** steps down the USB 5 V input to the designed 3.3 V rail. The circuit uses **L1 = 2.2 µH** and a feedback divider of **R1 = 450 kΩ** and **R2 = 100 kΩ**.
 
-This lets the small AC microphone signal be handled by an amplifier running from one positive supply rail.
+The input is decoupled with **C1 = 10 µF** and **C2 = 100 nF**; the output uses **C3 = 22 µF** and **C4 = 100 nF**. The 3.3 V rail supplies the ESP32-S3 and the analog stages.
 
-## 3. Mid-supply reference and preamplifier
+## 03 · Electret microphone and bias
 
-R12 and R13 are both 10 kΩ, making a nominal 1.65 V midpoint from 3.3 V. C9 = 10 µF and C10 = 100 nF filter this node. U4B buffers the midpoint, and U4A is the microphone preamplifier. Both op-amps are in the dual AD8656ARZ package.
+![Electret microphone bias network](../images/kicad/03-electret-microphone-bias.png)
 
-The preamp feedback has R9 = 47 kΩ and R10 = 4.7 kΩ:
+**MK1** is the **AOM-5024P-HD-MB-R** electret microphone. **R14 = 2.2 kΩ** provides its bias. Before reaching the microphone, the 3.3 V supply passes through **R23 = 100 Ω**, with **C13 = 10 µF** to ground, to reduce supply interference at the microphone node.
+
+**C11 = 100 nF** AC-couples the microphone output to the amplifier. The input reference path at the next stage uses **R11 = 22 kΩ**; the simple `R11/C11` high-pass estimate is about **72 Hz**.
+
+## 04 · Buffered reference and preamplifier
+
+![Analog reference and AD8656ARZ preamplifier](../images/kicad/04-reference-preamplifier.png)
+
+Because the circuit runs on one 3.3 V rail, the microphone signal is amplified around a nominal **1.65 V reference**, not around ground. **R12/R13 = 10 kΩ** create the midpoint, **C9 = 10 µF** and **C10 = 100 nF** smooth it, and **U4B** buffers the reference.
+
+The other half of the **AD8656ARZ**, **U4A**, is the non-inverting gain stage. **R9 = 47 kΩ** and **R10 = 4.7 kΩ** give:
 
 ```text
-Nominal gain = 1 + R9 / R10
-             = 1 + 47 kΩ / 4.7 kΩ
-             = 11 V/V, about 20.8 dB
+Av = 1 + (R9 / R10)
+   = 1 + (47 kΩ / 4.7 kΩ)
+   = 11 V/V  ≈ 20.8 dB
 ```
 
-That is the resistor-ratio design gain. I still need to compare it with measured waveforms after assembly.
+This is the intended resistor-ratio gain; no physical gain measurement has been made yet.
 
-## 4. Active filter and ADC
+## 05 · Fourth-order active low-pass filter
 
-U5 is a TLV9062. The design uses two second-order Sallen-Key filter stages:
+![Fourth-order TLV9062 active low-pass filter](../images/kicad/05-active-low-pass-filter.png)
 
-| Stage | R values | C values |
+The **TLV9062 (U5)** is used for two cascaded unity-gain Sallen-Key sections. The design targets a fourth-order low-pass response with a cutoff around **7 kHz**.
+
+| Stage | Resistors | Capacitors |
 | --- | --- | --- |
-| First | R15/R16 = 2.49 kΩ each | C12 = 8.2 nF; C14 = 10 nF |
-| Second | R17/R18 = 2.67 kΩ each | C15 = 22 nF; C16 = 3.3 nF |
+| First (U5A) | R15/R16 = 2.49 kΩ | C12 = 8.2 nF; C14 = 10 nF |
+| Second (U5B) | R17/R18 = 2.67 kΩ | C15 = 22 nF; C16 = 3.3 nF |
 
-The intended overall filter is fourth-order with a corner around 7 kHz. R19 = 220 Ω and C18 = 1 nF sit at the ESP32 ADC input (GPIO4 / ADC1_CH3).
+The complete filter response has not yet been confirmed by a matching-part simulation or measurements on assembled hardware.
 
-For the firmware stage I still have to choose the ESP32 ADC sample rate. The 16 kHz rate from the offline Python recordings is not automatically the hardware rate, and the filter's rejection near Nyquist must be checked.
+## 06 · ESP32 ADC input interface
 
-## 5. ESP32, programming and LED outputs
+![ADC input RC network](../images/kicad/06-adc-input.png)
 
-U2 is an ESP32-S3-WROOM-1. The design includes RESET and BOOT switches and three test points. The three indicators use separate ESP32 outputs and 330 Ω series resistors:
+The filtered audio passes through **R19 = 220 Ω** to the `ADC_AUDIO` net, with **C18 = 1 nF** to ground. This is connected to **ESP32-S3 GPIO4 / ADC1_CH3**.
 
-| Channel | LED | Selected part |
-| --- | --- | --- |
-| D1 / R20 | Green / 330 Ω | Kingbright APT3216LZGCK |
-| D2 / R21 | Blue / 330 Ω | Kingbright APT3216LVBC/D |
-| D3 / R22 | Red / 330 Ω | Kingbright APT3216SURCK |
+The analog sampling rate still has to be chosen for firmware. The 16 kHz rate in the offline Python test was the recording-analysis rate, not a verified board ADC setting.
 
-The supplier selections are in [the parts supplements](../procurement/). We still need to check actual LED brightness and assign each sound category to an output in firmware.
+## 07 · ESP32-S3 control and programming
 
-## 6. Layout and mechanical work
+![ESP32-S3 USB, BOOT, RESET and UART connections](../images/kicad/07-esp32-s3-control.png)
 
-The saved PCB has two copper layers, a B.Cu ground zone, four mounting holes and a defined ESP32 antenna area. The PCB outline is 74.3 × 57.5 mm. The editable V2 source is the main layout reference; the image currently on the README is a screenshot from an earlier routing stage.
+**U2** is the **ESP32-S3-WROOM-1**. The schematic includes the native USB D+/D− connections through **R7/R8 = 22 Ω**, pull-ups and buttons for **RESET (SW1)** and **BOOT (SW2)**, and **UART_TX / UART_RX** test points. The 3.3 V supply is decoupled with **C5 = 10 µF** and **C6 = 100 nF**.
 
-The next checks are the native ERC/DRC reports, final visual inspection around the connector and antenna, then assembly. [I have a separate bench log](assembly-and-testing.md) for the measurements once the board is soldered.
+The ADC audio input is on **GPIO4**. The three LED channels use **GPIO5, GPIO6 and GPIO7**. Firmware and USB bring-up are still part of the next stage.
 
-## KiCad files and BOM
+## 08 · Visual indicator outputs
 
-- [V2 schematic](../hardware/current/PE04_Chime_Detector.kicad_sch)
-- [V2 routed PCB](../hardware/current/PE04_Chime_Detector.kicad_pcb)
-- [V2 project](../hardware/current/PE04_Chime_Detector.kicad_pro)
-- [V2 design rules](../hardware/current/PE04_Chime_Detector.kicad_dru)
-- [Full assembly BOM](../procurement/PE04_V2_Assembly_BOM.csv)
-- [Selected supplier parts](../procurement/PE04_Supplementary_Selected_Parts.csv)
+![Three LED indicator channels](../images/kicad/08-led-indicators.png)
+
+The board has three independently controlled LED outputs:
+
+| Channel | LED | Series resistor | GPIO |
+| --- | --- | --- | --- |
+| LED_CH1 | D1, green | R20 = 330 Ω | GPIO5 |
+| LED_CH2 | D2, blue | R21 = 330 Ω | GPIO6 |
+| LED_CH3 | D3, red | R22 = 330 Ω | GPIO7 |
+
+The supplier parts lists select Kingbright LEDs. The board labels read `Tone 1`, `Tone 2` and `Tone 3`, but the final firmware mapping from household sounds to the LEDs has not been implemented.
+
+## PCB and project files
+
+The [V2 PCB layout notes](pcb-layout.md) show the actual routing and KiCad 3D views. The complete editable KiCad project is in [`hardware/current/`](../hardware/current/), including local footprint/symbol libraries, two STEP models and the design-rule file. The [assembly BOM](../procurement/PE04_V2_Assembly_BOM.csv) comes from the V2 source.
+
+We still need to record KiCad ERC/DRC results and check the finished board after soldering. The schematic and renders show the design, not tested hardware.
