@@ -1,0 +1,352 @@
+(footprint "AOM5024PHDMBR"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "AOM-5024P-HD-MB-R-4")
+	(tags "Microphone")
+	(property "Reference" "REF**"
+		(at -10.07 5.2 0)
+		(layer "F.SilkS")
+		(uuid "720c6714-c288-412f-ab53-f921e45e84e4")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Value" "AOM5024PHDMBR"
+		(at -1.27 2 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "b7fdcd49-72d2-4054-ad49-d7f545f61209")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Datasheet" "https://api.puiaudio.com/filename/AOM-5024P-HD-MB-R.pdf"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "aa268f22-2212-49b1-a83b-3b14c161cc6a")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "20 Hz ~ 20 kHz Analog Microphone 1 V ~ 10 V Omnidirectional (-24dB +/-3dB) PC Pins"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ea5fa551-34c8-4e59-bc9f-ac2a90315901")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Height" "7.2"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "4171eccd-150f-42e8-bcbc-4f4c53e34f0f")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Manufacturer_Name" "PUI Audio"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ef427015-4adc-4f99-91bc-f97e4388bb46")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Manufacturer_Part_Number" "AOM-5024P-HD-MB-R"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d5ae5420-0a1a-44ef-90af-b179b7c17386")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Mouser Part Number" "665-AOM5024P-HD-MB-R"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "870d153a-641d-4446-8698-26e78439a790")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/PUI-Audio/AOM-5024P-HD-MB-R?qs=7D1LtPJG0i0Z0nF4DtEWiQ%3D%3D"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d94ff7ab-ff42-4c1f-bfc9-4171b5465782")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Arrow Part Number" "AOM-5024P-HD-MB-R"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "001dbc8d-2d96-4453-b4ce-35fcc5892317")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Arrow Price/Stock" "https://www.arrow.com/en/products/aom-5024p-hd-mb-r/projects-unlimited?utm_currency=USD&region=nac"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "2af1ab9a-c6de-4dab-a5c5-a758e52b49e1")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -7.12 2)
+		(end -7.12 2)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "3bd553bb-1d26-48e0-b262-fec4f896da1c")
+	)
+	(fp_line
+		(start 4.58 2)
+		(end 4.58 2)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "49060b98-ced2-448f-8bbe-b81beb9bb49d")
+	)
+	(fp_line
+		(start 4.9 0)
+		(end 4.9 0)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "ed6823f0-50a9-4bf8-a75b-c3fdc6a21c68")
+	)
+	(fp_line
+		(start 5 0)
+		(end 5 0)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "34079c0b-684a-4cc9-9791-a31e08d109f5")
+	)
+	(fp_arc
+		(start -7.12 2)
+		(mid -1.27 -3.85)
+		(end 4.58 2)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "643d76c4-1336-4fa9-8f93-c6e1bdcf7598")
+	)
+	(fp_arc
+		(start 4.58 2)
+		(mid -1.27 7.85)
+		(end -7.12 2)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "32569a7b-dc34-481b-9c32-7ba320cb28fe")
+	)
+	(fp_arc
+		(start 4.9 0)
+		(mid 4.95 -0.05)
+		(end 5 0)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "2ba4befa-b624-4032-8233-7cc887cb10e7")
+	)
+	(fp_arc
+		(start 5 0)
+		(mid 4.95 0.05)
+		(end 4.9 0)
+		(stroke
+			(width 0.15)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "76f4a419-f198-4630-930b-519434f53aee")
+	)
+	(fp_line
+		(start -8.12 -4.85)
+		(end 5.58 -4.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "856221ec-430e-4a4b-b663-5a977399b721")
+	)
+	(fp_line
+		(start -8.12 8.85)
+		(end -8.12 -4.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "96925f50-e262-4ce4-9804-9bffc2abc0bc")
+	)
+	(fp_line
+		(start 5.58 -4.85)
+		(end 5.58 8.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f55e441b-68ff-47fb-9762-9bb11af10954")
+	)
+	(fp_line
+		(start 5.58 8.85)
+		(end -8.12 8.85)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "2df7ec62-9160-4c39-92d2-ef1310042922")
+	)
+	(fp_line
+		(start -7.12 2)
+		(end -7.12 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "dfba69c7-0ded-47ae-98b9-e3ffb112bbd2")
+	)
+	(fp_line
+		(start 4.58 2)
+		(end 4.58 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "2f3e743f-1858-460d-9fe6-1e8d36e04c88")
+	)
+	(fp_arc
+		(start -7.12 2)
+		(mid -1.27 -3.85)
+		(end 4.58 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "d152f470-1eab-411b-a9ad-ee76d599db43")
+	)
+	(fp_arc
+		(start 4.58 2)
+		(mid -1.27 7.85)
+		(end -7.12 2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "743d61d9-452b-44a8-9f3b-d9157b15860f")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -1.27 2 0)
+		(layer "F.Fab")
+		(uuid "15220f61-5960-4ce8-a792-9939dfc2ec1e")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" thru_hole rect
+		(at 0 0)
+		(size 1.6 1.6)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "e55d2170-7d85-4914-aa6f-43fb89aa1798")
+	)
+	(pad "2" thru_hole circle
+		(at -2.54 0)
+		(size 1.6 1.6)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "b4bbc530-f653-428a-a402-c68c860f07a3")
+	)
+	(embedded_fonts no)
+	(model "${KIPRJMOD}/libraries/3d/AOM-5024P-HD-MB-R.stp"
+		(offset
+			(xyz -1.25 -2 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 -180)
+		)
+	)
+)

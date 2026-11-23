@@ -1,94 +1,83 @@
 # PE-04 | ESP32-S3 Offline Chime Detector
 
-**Muhammad Ans | Mechatronic Systems Engineering | Practical Electronics, Hochschule Rhein-Waal**
+**Muhammad Ans | Mechatronic Systems Engineering | Practical Electronics, Rhine-Waal University of Applied Sciences**
 
-KiCad · PCB design · LTspice · Analog electronics · Python signal processing
+KiCad · PCB design · Analog electronics · LTspice · Signal processing
 
-For my Practical Electronics project, I am working on a USB-powered sound detector that translates household chimes into visual alerts. It combines a microphone front-end, analog filtering, an ESP32-S3 and three LED channels. The aim is to recognize a sound by its frequency **and** timing pattern without relying on cloud processing.
+I'm developing an offline, USB-C-powered chime detector that converts recognizable household sounds into visual indications. The hardware uses an electret microphone, analog amplification and filtering, an ESP32-S3 and three LEDs. My project work includes sound analysis, Goertzel-based detection experiments, LTspice exploration and development of the team schematic and PCB.
 
-My main work documented here covers audio analysis, Goertzel-based detection experiments, analog circuit simulation and participation in the ESP32-S3 schematic/PCB design.
+## PCB design - Revision V2
 
-![PE-04 PCB layout in KiCad](images/pcb/latest-layout-screenshot-2026-11-18.jpg)
+The latest project files are dated **22 November 2026**, revision **V2**. This is our current design for the next assembly stage.
 
-*PCB layout under development, November 2026.*
+| Open in KiCad | Files |
+| --- | --- |
+| Schematic | [PE04_Chime_Detector.kicad_sch](hardware/current/PE04_Chime_Detector.kicad_sch) |
+| PCB | [PE04_Chime_Detector.kicad_pcb](hardware/current/PE04_Chime_Detector.kicad_pcb) |
+| Project | [PE04_Chime_Detector.kicad_pro](hardware/current/PE04_Chime_Detector.kicad_pro) |
+| Design rules | [PE04_Chime_Detector.kicad_dru](hardware/current/PE04_Chime_Detector.kicad_dru) |
+| Custom libraries | [Symbols, footprints and 3D models](hardware/current/libraries/) |
+
+The project has 57 electronic component footprints plus four mounting holes. Its 57 electronic reference/value entries agree with the V2 schematic. We have supplied the corresponding project-local KiCad libraries, so the source files can be reviewed as a set.
+
+![PCB routing preview from 18 November 2026](images/pcb/latest-layout-screenshot-2026-11-18.jpg)
+
+*Earlier PCB routing screenshot (18 November). Open the V2 PCB file above for the latest board geometry.*
+
+### Hardware architecture
+
+| Section | V2 design |
+| --- | --- |
+| Microcontroller | ESP32-S3-WROOM-1 |
+| USB-C / power | USB-C connector, USBLC6-2SC6 ESD protection, TLV62569DBV 3.3 V buck converter |
+| Microphone | AOM-5024P-HD-MB-R, with bias, decoupling and AC coupling |
+| Analog gain / reference | AD8656ARZ dual op-amp; buffered 1.65 V reference and nominal 11× preamp |
+| Analog filter | TLV9062; two Sallen-Key stages, fourth-order low-pass design |
+| ADC / indicators | GPIO4 ADC input; three independent green, blue and red LED channels |
+
+[Read the circuit explanation](docs/hardware-architecture.md)
 
 ## My engineering work
 
-### 1. Sound analysis and detection logic
+### Sound-analysis experiments
 
-I started with real recordings to find the frequency and timing patterns of a microwave chime, doorbell and smoke-detector test signal. An early frequency-only trigger near 2,050 Hz produced false alerts when I added hand claps.
+I analyzed microwave, doorbell and smoke-alarm test recordings to compare their frequency and timing patterns. The offline detector experiment focused on the microwave's tone near 2,050 Hz. A simple frequency trigger reacted to hand claps, so I tested tone-purity and three-beep timing checks.
 
-I tested a more selective offline approach using:
+The development set reported the expected alerts on four microwave/clap recordings: **1, 1, 1 and 0**. Those results cover this small offline test set, not an ESP32 firmware implementation or a doorbell/smoke-alarm classifier.
 
-- 16 kHz mono audio, 1,024-sample Hann windows and a 160-sample hop.
-- Goertzel analysis around the microwave's 2,050 Hz tone.
-- Tone-purity, minimum beep-duration and three-beep timing checks.
+![Recorded doorbell and smoke-alarm test spectrogram](images/audio/doorbell-and-smoke-detector-spectrogram.png)
 
-The development recordings produced the expected alert counts:
+[Sound-analysis details](docs/sound-analysis.md)
 
-| Recording | Expected | Detected |
-| --- | ---: | ---: |
-| Microwave recording 1 | 1 | 1 |
-| Microwave recording 2 | 1 | 1 |
-| Microwave with claps | 1 | 1 |
-| Claps only | 0 | 0 |
+### LTspice microphone-front-end work
 
-![Doorbell and smoke-detector test recordings](images/audio/doorbell-and-smoke-detector-spectrogram.png)
+I studied microphone biasing, an analog mid-supply reference, amplification, filtering and transient response in LTspice. The saved early amplifier-plus-RC-filter sweep has about **+20.08 dB** gain at **2.054 kHz** for `V(adc_out)/V(mic_raw)`. I also investigated supply ripple and op-amp model convergence.
 
-The implemented *offline detection rules* currently target microwave beeps. The doorbell and smoke-detector recordings were characterized separately and require different recognition rules.
+![LTspice AC response from an earlier analog experiment](images/ltspice/initial-ac-frequency-response.png)
 
-[Read my sound-analysis notes](docs/sound-analysis.md)
+These LTspice screenshots document an earlier circuit iteration; they are not the measured response of the AD8656ARZ/TLV9062 V2 hardware.
 
-### 2. Analog signal conditioning and LTspice
+[LTspice experiments](docs/ltspice-experiments.md)
 
-I explored how to bring a small electret-microphone signal into an ADC-friendly range using a 3.3 V supply, mid-supply bias, non-inverting amplification and low-pass filtering.
+### Parts and assembly preparation
 
-![LTspice AC simulation](images/ltspice/initial-ac-frequency-response.png)
+The latest PCB package is accompanied by two supplementary parts lists dated **22 November 2026**. They specify 21 supplier line items covering 27 board positions, including the AD8656ARZ, three Kingbright LEDs and two pushbuttons. I matched those entries against the V2 PCB to produce a full, reference-based assembly BOM while leaving unspecified supplier parts blank.
 
-In the saved amplifier-plus-RC-filter experiment, the AC cursor reads approximately +20.08 dB at 2.054 kHz for `V(adc_out)/V(mic_raw)`. I also investigated startup and transient behavior, microphone-bias supply noise, and convergence problems when importing an op-amp manufacturer model.
+- [V2 assembly BOM - 61 footprints](procurement/PE04_V2_Assembly_BOM.csv)
+- [Supplementary selected parts and order codes](procurement/PE04_Supplementary_Selected_Parts.csv)
+- [Original Excel supplements and purchasing notes](procurement/)
 
-The screenshot above is from an earlier LTspice concept, with different op-amps and filtering from the integrated KiCad design. I keep those experiments separate to make it clear what each plot demonstrates.
+## Current stage
 
-[Read my LTspice experiments](docs/ltspice-experiments.md) · [Circuit screenshot](images/ltspice/initial-frequency-sweep-schematic.png) · [Transient traces](images/ltspice/real-mic-bias-transient.png)
-
-### 3. PCB and electronic system design
-
-I have also worked on the team's KiCad schematic and two-layer PCB, focusing on the microphone signal path, circuit integration and power/I/O interfaces. The board brings together these stages:
-
-| Function | Circuit implementation |
+| Completed | Next |
 | --- | --- |
-| Power and USB | USB-C input, TLV62569DBV 3.3 V buck converter, USB protection |
-| Microphone | AOM-5024P-HD-MB-R electret microphone, bias and AC coupling |
-| Reference and gain | AD8656 buffered 1.65 V reference and nominal 11× preamplifier |
-| Analog filtering | TLV9062 with two second-order Sallen-Key low-pass sections |
-| Microcontroller | ESP32-S3-WROOM-1; ADC connected on GPIO4 |
-| Indicators | Three LED channels with individual series resistors |
+| V2 KiCad schematic, PCB and custom libraries | Open in KiCad and record ERC/DRC results |
+| Component-level BOM and supplier supplements | Confirm parts, assembly and soldering |
+| Earlier LTspice and sound-analysis experiments | Capture voltage, analog and ADC measurements on assembled hardware |
+| Offline microwave-pattern feasibility tests | Implement and evaluate ESP32 real-time detection and LED mappings |
 
-The analog circuit aims for a fourth-order low-pass response around 7 kHz. The nominal preamplifier gain, filter and ADC input network are documented in the [hardware notes](docs/hardware-architecture.md). A [57-component design-value BOM](hardware/archive/earlier-kicad-sources/pe04-design-bom.csv) is also available.
+No soldered or tested board is documented yet. The project is an educational assistive demonstrator, not a certified smoke-alarm system.
 
-The latest PCB layout screenshot is shown above. [Earlier editable KiCad files](hardware/archive/earlier-kicad-sources/) are included for design inspection; the matching native files for the newest layout will be added when available.
+[Assembly and bring-up checklist](docs/assembly-and-testing.md) · [Archived earlier KiCad revision](hardware/archive/earlier-kicad-sources/)
 
-## Design lessons
-
-- A frequency match alone can misclassify short sounds. Temporal patterns and tone purity matter.
-- A microphone front-end needs correct DC biasing and sufficient signal swing for the ADC.
-- Simulation values only describe the circuit and models used for that particular run.
-- Sampling frequency and analog filter cutoff must be chosen together to avoid aliasing.
-
-## Project files
-
-| Folder | Contents |
-| --- | --- |
-| [`docs/hardware-architecture.md`](docs/hardware-architecture.md) | Circuit blocks, component values, design checks |
-| [`docs/ltspice-experiments.md`](docs/ltspice-experiments.md) | Analog simulations and troubleshooting |
-| [`docs/sound-analysis.md`](docs/sound-analysis.md) | Frequency analysis, Goertzel parameters and test cases |
-| [`hardware/`](hardware/archive/earlier-kicad-sources/) | KiCad schematic, PCB, project file and BOM |
-| [`images/`](images/) | PCB, oscilloscope-style simulation plots and spectrogram |
-
-## Current status
-
-The design is in progress. The repository contains an earlier native KiCad revision, an updated PCB screenshot and documented simulation/audio experiments. The original LTspice `.asc` files, offline Python notebook and test recordings are not yet included. Next steps are the matching latest KiCad files, ERC/DRC, real-time ESP32 firmware, board bring-up and measurements.
-
-The sound-to-LED mapping has not yet been implemented. This student prototype is not a certified smoke-alarm or safety device.
-
-*Team project: Muhammad Ans; schematic and PCB collaboration with Ahmed Yehia Mohamed.*
+*Team project: Muhammad Ans, with KiCad schematic and PCB collaboration from Ahmed Yehia Mohamed.*

@@ -1,0 +1,62 @@
+﻿Reference,PCB Value,Footprint,Manufacturer,Selected MPN,Vendor,Vendor Order Code,Supplement Source,Notes
+C1,10uF,PE04_Footprints:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C2,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C3,22uF,PE04_Footprints:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C4,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder_Variant2,,,,,,Supplier part not specified in the two supplements
+C5,10uF,PE04_Footprints:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C6,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder_Variant2,,,,,,Supplier part not specified in the two supplements
+C7,1uF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder_Variant2,YAGEO,CC0805KKX7R7BB105,Mouser,603-CC805KKX7R7BB105,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+C8,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C9,10uF,PE04_Footprints:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C10,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C11,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C12,8.2nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder_Variant2,Murata,GRM2195C1H822JA01D,Mouser,81-GRM2195C1H822JA01,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+C13,10uF,PE04_Footprints:C_1206_3216Metric_Pad1.33x1.80mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C14,10nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,Murata,GRM2195C1H103JA01J,Mouser,81-GRM215C1H103JA01J,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+C15,22nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,KEMET,C0805C223J5GACTU,Reichelt,KEM C0G0805 22N,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+C16,3.3nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,KEMET,C0805C332J5GACTU,Mouser,80-C0805C332J5G,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+C17,100nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+C18,1nF,PE04_Footprints:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder_Variant2,YAGEO,CC0805JRNPO9BN102,Mouser,603-CC805JRNPO9BN102,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+D1,Green LED,PE04_Footprints:LED_1206_3216Metric,Kingbright,APT3216LZGCK,Mouser,604-APT3216LZGCK,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+D2,Blue LED,PE04_Footprints:LED_1206_3216Metric,Kingbright,APT3216LVBC/D,Mouser,604-APT3216LVBCD,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+D3,Red LED,PE04_Footprints:LED_1206_3216Metric,Kingbright,APT3216SURCK,Mouser,604-APT3216SURCK,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+H1,MountingHole_2.2mm_M2,PE04_Footprints:MountingHole_2.2mm_M2,,,,,,Mounting hole
+H2,MountingHole_2.2mm_M2,PE04_Footprints:MountingHole_2.2mm_M2,,,,,,Mounting hole
+H3,MountingHole_2.2mm_M2,PE04_Footprints:MountingHole_2.2mm_M2,,,,,,Mounting hole
+H4,MountingHole_2.2mm_M2,PE04_Footprints:MountingHole_2.2mm_M2,,,,,,Mounting hole
+J2,629722000214,PE04_Footprints:USB_C_629722000214_AISLER,,,,,,Supplier part not specified in the two supplements
+L1,2.2uH,PE04_Footprints:L_Taiyo-Yuden_NR-40xx_HandSoldering,,,,,,Supplier part not specified in the two supplements
+MK1,AOM-5024P-HD-MB-R,PE04_Footprints:AOM5024PHDMBR,,,,,,Supplier part not specified in the two supplements
+R1,450K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+R2,100K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,,,,,,Supplier part not specified in the two supplements
+R3,5K1,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,,,,,,Supplier part not specified in the two supplements
+R4,5K1,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+R5,10K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,,,,,,Supplier part not specified in the two supplements
+R6,10K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+R7,22R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,YAGEO,RC0805FR-0722RL,Mouser,603-RC0805FR-0722RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R8,22R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,YAGEO,RC0805FR-0722RL,Mouser,603-RC0805FR-0722RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R9,47K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-0747KL,Mouser,603-RC0805FR-0747KL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R10,4K7,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-074K7L,Mouser,603-RC0805FR-074K7L,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R11,22K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,YAGEO,RC0805FR-0722KL,Mouser,603-RC0805FR-0722KL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R12,10K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+R13,10K,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,,,,,,Supplier part not specified in the two supplements
+R14,2K2,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,YAGEO,RC0805FR-072K2L,Mouser,603-RC0805FR-072K2L,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R15,2K49,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,Vishay,CRCW08052K49FKEA,Mouser,71-CRCW0805-2.49K-E3,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R16,2K49,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,Vishay,CRCW08052K49FKEA,Mouser,71-CRCW0805-2.49K-E3,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R17,2K67,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder,Vishay,CRCW08052K67FKEA,Mouser,71-CRCW0805-2.67K-E3,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R18,2K67,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,Vishay,CRCW08052K67FKEA,Mouser,71-CRCW0805-2.67K-E3,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R19,220R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-07220RL,Mouser,603-RC0805FR-07220RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R20,330R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-07330RL,Mouser,603-RC0805FR-07330RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R21,330R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-07330RL,Mouser,603-RC0805FR-07330RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R22,330R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-07330RL,Mouser,603-RC0805FR-07330RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+R23,100R,PE04_Footprints:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder_Variant2,YAGEO,RC0805FR-07100RL,Mouser,603-RC0805FR-07100RL,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+SW1,RESET,PE04_Footprints:SW_PUSH_6mm,C&K,PTS645SL50-2 LFS,Mouser,611-PTS645SL502,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+SW2,BOOT,PE04_Footprints:SW_PUSH_6mm,C&K,PTS645SL50-2 LFS,Mouser,611-PTS645SL502,Partslist_Group_PE04_Supplement_2_of_2.xlsx,Supplier part listed in supplement; verify before ordering
+TP1,TestPoint,PE04_Footprints:TestPoint_Pad_D2.0mm,,,,,,Supplier part not specified in the two supplements
+TP2,TestPoint,PE04_Footprints:TestPoint_Pad_D2.0mm,,,,,,Supplier part not specified in the two supplements
+TP3,TestPoint,PE04_Footprints:TestPoint_Pad_D2.0mm,,,,,,Supplier part not specified in the two supplements
+U1,TLV62569DBV,PE04_Footprints:SOT-23-5,,,,,,Supplier part not specified in the two supplements
+U2,ESP32-S3-WROOM-1,PE04_Footprints:ESP32-S3-WROOM-1_AISLER,,,,,,Supplier part not specified in the two supplements
+U3,USBLC6-2SC6,PE04_Footprints:SOT-23-6,,,,,,Supplier part not specified in the two supplements
+U4,AD8656ARZ,PE04_Footprints:SOIC-8_3.9x4.9mm_P1.27mm,Analog Devices,AD8656ARZ,Mouser,584-AD8656ARZ,Partslist_Group_PE04_Supplement_1_of_2-2.xlsx,Supplier part listed in supplement; verify before ordering
+U5,TLV9062,PE04_Footprints:SOIC-8_3.9x4.9mm_P1.27mm_Variant2,,,,,,Supplier part not specified in the two supplements
